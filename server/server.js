@@ -2,7 +2,9 @@ import express from 'express';
 import cors from 'cors';
 
 import { 
-    getCommunityNotes, 
+    getCommunityNotes,
+    createCommunityNote,
+    deleteCommunityNote 
 } from './database.js';
 
 
@@ -13,6 +15,22 @@ app.use(cors());
 app.get("/community-notes", async (req, res) => {
     const notes = await getCommunityNotes();
     res.json(notes);
+});
+
+app.post("/community-notes", async (req, res) => {
+    const { given_name, surname, notes, email } = req.body; 
+    const member = await createCommunityNote(given_name, surname, notes, email); 
+    res.status(201).json(member);
+});
+
+app.delete("/community-notes/:id", async (req, res) => {
+    const noteId = req.params.id;
+    const result = await deleteCommunityNote(noteId);
+    if (result === 1) {
+        res.sendStatus(204)
+    } else {
+        res.status(500).json('Something broke!')
+    }
 });
 
 app.use((err, req, res, next) => {

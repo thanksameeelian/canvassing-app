@@ -16,3 +16,30 @@ export async function getCommunityNotes() {
   const [rows] = await pool.query("SELECT * from community_member_notes");
   return rows; 
 }
+
+export async function getCommunityNote(id) {
+    const [user] = await pool.query(`
+        SELECT * 
+        FROM community_member_notes
+        WHERE id = ?
+        `, [id]);
+    return user[0];
+}
+
+export async function createCommunityNote(givenName, surname, notes, email) {
+    const [result] = await pool.query(`
+        INSERT INTO community_member_notes (given_name, surname, notes, email)
+        VALUES (?,?,?,?)`
+        , [givenName, surname, notes, email]);
+    const id = result.insertId;
+    return getCommunityNote(id);
+}
+
+export async function deleteCommunityNote(id) {
+    const [result] = await pool.query(`
+        DELETE 
+        FROM community_member_notes
+        WHERE id = ?
+        `, [id]);
+    return result.affectedRows;
+}

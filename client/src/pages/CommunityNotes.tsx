@@ -3,13 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-interface Note {
-    id: number;
-    given_name: string;
-    surname: string;
-    email: string;
-    notes: string;
-}
+import { Note } from '../interfaces/interfaces';
 
 const CommunityNotes = () => {
 
@@ -43,6 +37,7 @@ const CommunityNotes = () => {
 
     return (
         <div>
+            <button><Link to="/create-note">Add new note</Link></button>
             <h1>Canvassing Notes</h1>
             <table>
                 <thead>
@@ -60,6 +55,7 @@ const CommunityNotes = () => {
                             <td>{noteDetail.surname}</td>
                             <td>{noteDetail.email}</td>
                             <td>{noteDetail.notes}</td>
+                            <td><button className="delete" onClick={() => handleDelete(noteDetail.id)}>Delete</button></td>
                         </tr>
                     ))}
                 </tbody>
