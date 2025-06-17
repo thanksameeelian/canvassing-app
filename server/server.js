@@ -4,6 +4,8 @@ import cors from 'cors';
 import { 
     getCommunityNotes,
     createCommunityNote,
+    getCommunityNote,
+    editCommunityNote,
     deleteCommunityNote 
 } from './database.js';
 
@@ -22,6 +24,20 @@ app.post("/community-notes", async (req, res) => {
     const member = await createCommunityNote(given_name, surname, notes, email); 
     res.status(201).json(member);
 });
+
+app.get("/community-notes/:id", async (req, res) => {
+    const id = req.params.id;
+    const note = await getCommunityNote(id);
+    if (!note) throw new TypeError(`No known user with id ${id}`); 
+    res.json(note);
+});
+
+app.put("/community-notes/:id", async (req, res) => {
+    const id = req.params.id;
+    const { given_name, surname, notes, email } = req.body;
+    const note = await editCommunityNote(given_name, surname, notes, email, id);
+    res.json(note);
+})
 
 app.delete("/community-notes/:id", async (req, res) => {
     const noteId = req.params.id;

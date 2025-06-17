@@ -46,6 +46,9 @@ const CommunityNotes = () => {
                         <th scope="col">Surname</th>
                         <th scope="col">Email</th>
                         <th scope="col">Notes</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,6 +58,8 @@ const CommunityNotes = () => {
                             <td>{noteDetail.surname}</td>
                             <td>{noteDetail.email}</td>
                             <td>{noteDetail.notes}</td>
+                            <td><button className="details"><Link to={`${noteDetail.id}`}>See details</Link></button></td>
+                            <td><button><Link to={`edit/${noteDetail.id}`}>Edit</Link></button></td>
                             <td><button className="delete" onClick={() => handleDelete(noteDetail.id)}>Delete</button></td>
                         </tr>
                     ))}

@@ -11,6 +11,7 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DATABASE
 }).promise();
 
+// // ? const notesTable = process.env.MYSQL_DB_TABLE
 
 export async function getCommunityNotes() {
   const [rows] = await pool.query("SELECT * from community_member_notes");
@@ -33,6 +34,15 @@ export async function createCommunityNote(givenName, surname, notes, email) {
         , [givenName, surname, notes, email]);
     const id = result.insertId;
     return getCommunityNote(id);
+}
+
+export async function editCommunityNote(givenName, surname, notes, email, id) {
+    const [result] = await pool.query(`
+        UPDATE community_member_notes
+        SET given_name = ?, surname = ?, notes = ?, email = ?
+        WHERE id = ?`
+        , [givenName, surname, notes, email, id]);
+    return result;
 }
 
 export async function deleteCommunityNote(id) {
