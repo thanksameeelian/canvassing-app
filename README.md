@@ -15,8 +15,6 @@ MYSQL_DATABASE='canvassing_app'
 Developing locally, my MYSQL_HOST is '127.0.0.1' (as 'localhost' can occasionally cause problems).
 Your MySQL user must have sufficient permissions to create & manipulate databases. 
 
-**Alternatively** if there are issues with the above setup, there are raw SQL files available in `server/db/raw-SQL` which can be copy & pasted into a running MySQL instance: `schema.sql` for database & table setup and `seed.sql` to seed the table with notes, if desired.
-
 
 #### B. At base of `/server` directory: 
 - `npm install`
@@ -29,6 +27,9 @@ Your MySQL user must have sufficient permissions to create & manipulate database
 
 - `npm run start:seed` to create the database + db table seeded with several pre-made notes and start backend  
 
+***or***
+
+If there are issues with the above setup, there are raw SQL files available in `server/db/raw-SQL` which can be copy & pasted into a running MySQL instance: `schema.sql` for database & table setup and `seed.sql` to seed the table with notes, if desired.
 
 ### 2. Frontend Setup
 At base of `/client` directory:
