@@ -11,9 +11,11 @@ const ViewNote = () => {
     
     const navigate = useNavigate();
 
+    // id was sent in path that brought us here
     const { id } = useParams();
 
     const [note, setNote] = useState<Note | null>(null);
+    
     useEffect(() => {
         const fetchNote = async () => {
             try {

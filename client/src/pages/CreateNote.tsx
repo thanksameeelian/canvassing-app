@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'primereact/button';
 
+// // TODO: add new usestate(s) and display error within form
+// // TODO: make form component(s) and import into CreateNote & EditNote with route-specific props
         
 const CreateNote = () => {
-    // // TODO: add new usestate(s) and display error within form
-    // // TODO: make form component(s) and import into CreateNote & EditNote with route-specific props
 
+    const navigate = useNavigate();
+
+    // allow form fields' onChange functions to accommodate both input & text area types
     type InputChangeEvent = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
     const [note, setNote] = useState({
@@ -18,13 +21,12 @@ const CreateNote = () => {
         notes: null
     });
 
-    const navigate = useNavigate();
-
     const handleChange = (event: InputChangeEvent) => {
         setNote(prev => ({ ...prev, [event.target.name]: event.target.value }));
     }
 
     const handleSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
+        // interrupt browser's default behavior to await results of post request
         event.preventDefault()
         try {
             await axios.post("http://localhost:8080/community-notes", note);

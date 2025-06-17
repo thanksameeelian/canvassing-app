@@ -10,11 +10,14 @@ const EditNote = () => {
 
     const navigate = useNavigate();
 
+    // id was sent in path that brought us here
     const { id } = useParams();
 
+    const [note, setNote] = useState<Note | null>(null);
+
+    // allow form fields' onChange functions to accommodate both input & text area types
     type InputChangeEvent = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
-    const [note, setNote] = useState<Note | null>(null);
     useEffect(() => {
         const fetchNote = async () => {
             try {
@@ -28,11 +31,13 @@ const EditNote = () => {
         fetchNote();
     }, [id, navigate])
 
+    // constantly update focused input and account for it not aligning to Note interface while in-process
     const handleChange = (event: InputChangeEvent) => {
         setNote(prev => prev ? { ...prev, [event.target.name]: event.target.value } : prev as Note | null);
     }
 
     const handleSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
+        // interrupt browser's default behavior to await results of post request
         event.preventDefault()
         try {            
             await axios.put("http://localhost:8080/community-notes/" + id, note);
@@ -53,7 +58,7 @@ const EditNote = () => {
         }
     }
 
-    // // TODO: display "_____ cannot be null" errors to user
+    // // TODO: display "_____ cannot be null" validation errors to user
 
     return (
         <div>

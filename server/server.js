@@ -42,6 +42,7 @@ app.put("/community-notes/:id", async (req, res) => {
 app.delete("/community-notes/:id", async (req, res) => {
     const noteId = req.params.id;
     const result = await deleteCommunityNote(noteId);
+    // expect result (affected db table rows) to === 1 as 1 user has been deleted
     if (result === 1) {
         res.sendStatus(204)
     } else {

@@ -11,6 +11,9 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DATABASE
 }).promise();
 
+// prepared statements ("?"" placeholders) to help prevent SQL injection:
+// https://dev.mysql.com/doc/refman/8.4/en/sql-prepared-statements.html
+
 export async function getCommunityNotes() {
   const [rows] = await pool.query("SELECT * from community_member_notes");
   return rows; 
@@ -49,5 +52,6 @@ export async function deleteCommunityNote(id) {
         FROM community_member_notes
         WHERE id = ?
         `, [id]);
+    // expect affectedRows to === 1 as 1 user has been deleted
     return result.affectedRows;
 }

@@ -8,19 +8,16 @@ import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
-
+import { DataTableFilterMeta } from 'primereact/datatable';
 
 import { Note } from '../interfaces/interfaces';
 
-import { DataTableFilterMeta } from 'primereact/datatable';
-
 const CommunityNotes = () => {
+    const navigate = useNavigate();
 
     const [noteDetails, setNoteDetails] = useState<Note[]>([]);
     const [globalFilter, setGlobalFilter] = useState('');
     const [filters, setFilters] = useState<DataTableFilterMeta>({});
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchNoteDetails = async () => {
@@ -45,6 +42,7 @@ const CommunityNotes = () => {
         }
     }
 
+    // view, edit, and delete buttons for table rows
     const actionButtons = (rowData: any) => {
         return (
             <p>
@@ -82,7 +80,6 @@ const CommunityNotes = () => {
 
     return (
         <div>
-
             <h1 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 Canvassing Notes
             </h1>            
