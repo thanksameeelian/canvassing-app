@@ -10,10 +10,6 @@ const dbConfig = {
     database: process.env.MYSQL_DATABASE,
 };
 
-// // //
-// // // include DB TABLE NAME IN .ENV???? THEN USE HERE, IN SEEDDB.JS, AND IN DATABASE.JS ???
-// // //
-
 const connection = mysql.createConnection(dbConfig);
 
 const seedNotesTable =

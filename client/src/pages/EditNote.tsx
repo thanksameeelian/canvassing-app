@@ -1,6 +1,8 @@
 import { useState, useEffect, ChangeEvent, MouseEvent } from 'react';
 import axios from 'axios';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { Button } from 'primereact/button';    
 
 import { Note } from '../interfaces/interfaces';
 
@@ -40,12 +42,27 @@ const EditNote = () => {
         }
     }
 
+    const handleDelete = async (id: number) => {
+        if (window.confirm("Are you sure you want to delete this note?")) {
+            try {
+                await axios.delete("http://localhost:8080/community-notes/"+ id);
+                navigate("/community-notes");
+            } catch(error) {
+                console.log(error);
+            }
+        }
+    }
+
     // // TODO: display "_____ cannot be null" errors to user
 
     return (
         <div>
-            <button><Link to="/">Home</Link></button>
-            <Link to="/community-notes">notes list</Link>
+            <Button
+                label="All Notes"
+                severity="secondary"
+                onClick={() =>  navigate('/community-notes')}
+                icon="pi pi-arrow-left" 
+            />
             { note &&
                 <div className="form">
                     <h1>Edit Note</h1>
@@ -73,7 +90,16 @@ const EditNote = () => {
                             <textarea placeholder="Notes about community member" name="notes" defaultValue={note.notes} onChange={handleChange}/>
                         </label>
                     </p>
-                    <p><button onClick={handleSubmit}>Submit changes</button></p>
+                    <p style={{display: 'flex', gap: '5px'}}>
+                        <Button onClick={handleSubmit} label='Submit changes'/>            
+                        <Button 
+                            className="delete" 
+                            severity="danger" 
+                            outlined 
+                            onClick={() => handleDelete(note.id)} 
+                            label="Delete"
+                        />
+                    </p>
                 </div>
             }
         </div>

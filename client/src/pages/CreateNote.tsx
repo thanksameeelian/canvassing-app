@@ -1,10 +1,13 @@
 import { useState, ChangeEvent, MouseEvent } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
+import { Button } from 'primereact/button';
+
+        
 const CreateNote = () => {
     // // TODO: add new usestate(s) and display error within form
-    // // TODO: IF EditNote, make form component(s) and import into CreateNote & EditNote with route-specific props
+    // // TODO: make form component(s) and import into CreateNote & EditNote with route-specific props
 
     type InputChangeEvent = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
@@ -33,8 +36,12 @@ const CreateNote = () => {
 
     return (
         <div>
-            <Link to="/community-notes">notes list</Link>
-
+            <Button
+                label="All Notes"
+                severity="secondary"
+                onClick={() =>  navigate('/community-notes')}
+                icon="pi pi-arrow-left" 
+            />
             <div className="form">
                 <h1>Create Note</h1>
                 <p>
@@ -61,7 +68,7 @@ const CreateNote = () => {
                         <textarea placeholder="Notes about community member" name="notes" onChange={handleChange}/>
                     </label>
                 </p>
-                <p><button onClick={handleSubmit}>Add note</button></p>
+                <p><Button onClick={handleSubmit} label='Add note'/></p>
             </div>
         </div>
     )

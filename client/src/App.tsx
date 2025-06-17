@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { PrimeReactProvider } from 'primereact/api';    
 
 import CommunityNotes from './pages/CommunityNotes';
 import CreateNote from './pages/CreateNote';
@@ -10,19 +11,21 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/community-notes" />} />
-          <Route path="/community-notes" element={<CommunityNotes />}/>
-          <Route path="/create-note" element={<CreateNote />}/>
-          <Route path="/community-notes/:id" element={<ViewNote />} ErrorBoundary={NotFound}/>
-          <Route path="/community-notes/edit/:id" element={<EditNote />} ErrorBoundary={NotFound}/>
-          <Route path="*" element={<NotFound />}/>
-          <Route path="/not-found" element={<NotFound />}/>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <PrimeReactProvider>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Navigate to="/community-notes" />} />
+            <Route path="/community-notes" element={<CommunityNotes />}/>
+            <Route path="/create-note" element={<CreateNote />}/>
+            <Route path="/community-notes/:id" element={<ViewNote />} ErrorBoundary={NotFound}/>
+            <Route path="/community-notes/edit/:id" element={<EditNote />} ErrorBoundary={NotFound}/>
+            <Route path="*" element={<NotFound />}/>
+            <Route path="/not-found" element={<NotFound />}/>
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </PrimeReactProvider>
   );
 }
 

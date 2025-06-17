@@ -1,15 +1,26 @@
 import axios from 'axios';
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { CSVLink } from 'react-csv';
+
+import { Button } from 'primereact/button';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { InputText } from 'primereact/inputtext';
 
 
 import { Note } from '../interfaces/interfaces';
 
+import { DataTableFilterMeta } from 'primereact/datatable';
+
 const CommunityNotes = () => {
 
     const [noteDetails, setNoteDetails] = useState<Note[]>([]);
+    const [globalFilter, setGlobalFilter] = useState('');
+    const [filters, setFilters] = useState<DataTableFilterMeta>({});
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchNoteDetails = async () => {
@@ -17,14 +28,11 @@ const CommunityNotes = () => {
                 const res = await axios.get("http://localhost:8080/community-notes");
                 setNoteDetails(res.data);
             } catch(error) {
-                // // TODO: display message explaining error
                 console.log(error);
             }
         }
         fetchNoteDetails();
     }, [])
-
-    // // TODO: HANDLE TABLE FORMATTING/DISPLAY IF NO NOTES
 
     const handleDelete = async (id: number) => {
         if (window.confirm("Are you sure you want to delete this note?")) {
@@ -36,6 +44,31 @@ const CommunityNotes = () => {
             }
         }
     }
+
+    const actionButtons = (rowData: any) => {
+        return (
+            <p>
+                <Button
+                    icon="pi pi-eye"
+                    className="p-button-rounded p-button-text p-button-info"
+                    tooltip="View"
+                    onClick={() => navigate(`${rowData.id}`)}
+                />
+                <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-text p-button-warning"
+                    tooltip="Edit"
+                    onClick={() => navigate(`edit/${rowData.id}`)}
+                />
+                <Button
+                    icon="pi pi-trash"
+                    className="p-button-rounded p-button-text p-button-danger"
+                    tooltip="Delete"
+                    onClick={() => handleDelete(rowData.id)}
+                />
+            </p>
+        );
+    };
 
     // for CSV creation
     const ISOdate = new Date().toISOString();
@@ -49,39 +82,47 @@ const CommunityNotes = () => {
 
     return (
         <div>
-            <button><Link to="/create-note">Add new note</Link></button>
-            <h1>Canvassing Notes</h1>
-            {noteDetails.length && 
-                <CSVLink data={noteDetails} headers={headers} filename={`Canvassing-Notes-${formattedDate}.csv`}>
-                    Download CSV
-                </CSVLink>
-                }  
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">Given Name</th>
-                        <th scope="col">Surname</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Notes</th>
-                        <th scope="col">Details</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {noteDetails.map(noteDetail => (
-                        <tr className="noteDetail" key={noteDetail.id}>
-                            <td>{noteDetail.given_name}</td>
-                            <td>{noteDetail.surname}</td>
-                            <td>{noteDetail.email}</td>
-                            <td>{noteDetail.notes}</td>
-                            <td><button className="details"><Link to={`${noteDetail.id}`}>See details</Link></button></td>
-                            <td><button><Link to={`edit/${noteDetail.id}`}>Edit</Link></button></td>
-                            <td><button className="delete" onClick={() => handleDelete(noteDetail.id)}>Delete</button></td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+
+            <h1 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                Canvassing Notes
+            </h1>            
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5px', margin: '30px'}}>            
+                <Button 
+                    label="Add New Note"
+                    icon="pi pi-plus" 
+                    iconPos="left"
+                    onClick={() =>  navigate('/create-note')}
+                />
+                {noteDetails.length && 
+                    <CSVLink data={noteDetails} headers={headers} filename={`Canvassing-Notes-${formattedDate}.csv`}>
+                        <Button icon="pi pi-download" label="Export CSV" />
+                    </CSVLink>
+                 }
+            </div>
+            <div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <InputText
+                        placeholder="Search..."
+                        value={globalFilter}
+                        onChange={(e) => setGlobalFilter(e.target.value)}
+                    />
+                </div>
+                <DataTable
+                    value={noteDetails}
+                    sortMode="multiple"
+                    dataKey="id"
+                    globalFilterFields={['given_name', 'surname', 'email', 'notes']}
+                    emptyMessage="No notes found."
+                    filters={{ global: { value: globalFilter, matchMode: 'contains' } }}
+                    onFilter={(e) => setFilters(e.filters)}
+                >
+                    <Column field="given_name" header="Given Name" sortable style={{ minWidth: '12rem' }} />
+                    <Column field="surname" header="Surname" sortable style={{ minWidth: '12rem' }} />
+                    <Column field="email" header="Email" sortable style={{ minWidth: '12rem' }} />
+                    <Column field="notes" header="Notes" sortable style={{ minWidth: '12rem' }} />
+                    <Column body={actionButtons} header="Actions" style={{ width: '12rem' }} />
+                </DataTable>
+            </div>
         </div>
     )
 }

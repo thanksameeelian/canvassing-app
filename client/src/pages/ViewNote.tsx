@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+
+import { Button } from 'primereact/button';
 
 import { Note } from '../interfaces/interfaces';
 
@@ -44,20 +46,26 @@ const ViewNote = () => {
         }
     }
 
-    // // TO DO: when nonexistent id, ensure unnavigable OR empty state displaying explanatory content -- || rather than &&
     return (
         <div>
             {note && (
                 <div>
-                    <Link to="/community-notes">notes list</Link>
-
-                    <div>VIEW NOTE DETAILS {id}</div>
+                    <Button
+                        label="All Notes"
+                        severity="secondary"
+                        onClick={() =>  navigate('/community-notes')}
+                        icon="pi pi-arrow-left" 
+                    />
+                    <div style={{justifyContent: 'center', alignItems: 'center'}}>
+                    <div>Note Details {id}</div>
                     <div>{note.given_name} {note.surname}</div>
                     <div>{note.email}</div>
                     <div>{note.notes}</div>
-
-                    <button className="edit" onClick={() => handleEdit(note.id)}>Edit</button>
-                    <button className="delete" onClick={() => handleDelete(note.id)}>Delete</button>
+                    <p style={{display:"flex", gap: '5px'}}>
+                        <Button className="edit" onClick={() => handleEdit(note.id)} label="Edit"/>
+                        <Button className="delete" severity="danger" outlined onClick={() => handleDelete(note.id)} label="Delete"/>
+                    </p>
+                    </div>
                 </div>
             )}
         </div>

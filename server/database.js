@@ -11,8 +11,6 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DATABASE
 }).promise();
 
-// // ? const notesTable = process.env.MYSQL_DB_TABLE
-
 export async function getCommunityNotes() {
   const [rows] = await pool.query("SELECT * from community_member_notes");
   return rows; 
