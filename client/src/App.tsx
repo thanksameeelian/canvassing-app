@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import CommunityNotes from './pages/CommunityNotes';
 import CreateNote from './pages/CreateNote';
@@ -13,6 +13,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Navigate to="/community-notes" />} />
           <Route path="/community-notes" element={<CommunityNotes />}/>
           <Route path="/create-note" element={<CreateNote />}/>
           <Route path="/community-notes/:id" element={<ViewNote />} ErrorBoundary={NotFound}/>

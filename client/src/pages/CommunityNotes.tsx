@@ -2,6 +2,8 @@ import axios from 'axios';
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { CSVLink } from 'react-csv';
+
 
 import { Note } from '../interfaces/interfaces';
 
@@ -35,10 +37,25 @@ const CommunityNotes = () => {
         }
     }
 
+    // for CSV creation
+    const ISOdate = new Date().toISOString();
+    const formattedDate = ISOdate.slice(0, 10); // YY-MM-DD
+    const headers = [
+        { label: "Given Name", key: "given_name" },
+        { label: "Surname", key: "surname" },
+        { label: "Email", key: "email" },
+        { label: "Notes", key: "notes" }
+    ];
+
     return (
         <div>
             <button><Link to="/create-note">Add new note</Link></button>
             <h1>Canvassing Notes</h1>
+            {noteDetails.length && 
+                <CSVLink data={noteDetails} headers={headers} filename={`Canvassing-Notes-${formattedDate}.csv`}>
+                    Download CSV
+                </CSVLink>
+                }  
             <table>
                 <thead>
                     <tr>
