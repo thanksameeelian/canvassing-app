@@ -46,10 +46,10 @@ At base of `/client` directory:
 
 - I debated using a build tool like Vite or a framework like NextJS for this project, but ultimately did not because I wanted to match the project specifications as closely as possible.
 
-- I hoped to build out more robust and descriptive error handling that surfaced more information to the user but unfortunately can out of time. 
+- I hoped to build out more robust and descriptive error handling that surfaced more information to the user but unfortunately ran out of time. 
 
 ### Frontend
-- I ended up using (deprecated) create-react-app without a framework due to the concerns I mentioned above about matching the project specifications, but also for simplicity, expediency, and because of the limited purposes of this take-home project. In a production environment however, I would use a framework to build a highly performant app.
+- I ended up using (deprecated) `create-react-app` without a framework due to the concerns I mentioned above about matching the project specifications, but also for simplicity, expediency, and because of the limited purposes of this take-home project. In a production environment however, I would use a framework to build a highly performant app.
 
 - I would've loved to make this beautiful! And especially beautiful on mobile, as that's how I imagined this app primarily being used in the field.
 
