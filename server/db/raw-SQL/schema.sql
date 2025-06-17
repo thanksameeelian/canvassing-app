@@ -9,10 +9,3 @@ CREATE TABLE community_member_notes (
     email VARCHAR(254) NULL,
     created TIMESTAMP NOT NULL DEFAULT NOW() 
 );
-
-CREATE TABLE users (
-    id integer PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL,
-    pw VARCHAR(100) NOT NULL,
-    created TIMESTAMP NOT NULL DEFAULT NOW()
-);
